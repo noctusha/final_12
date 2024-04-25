@@ -3,21 +3,14 @@ name: golang_pipeline
 on: push
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
-
-      - name: Build
-        run: go build -v ./...
 
   test:
-    needs: build
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.0'
 
       - name: Run unit tests
         run: GOOS=linux GOARCH=amd64 go test -v ./...
@@ -28,6 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.0'
       - uses: golangci/golangci-lint-action@v3
 
   deploy:
